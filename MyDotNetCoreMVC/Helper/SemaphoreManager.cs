@@ -35,11 +35,10 @@ namespace MyDotNetCoreMVC.Helpers
         {
             if (SemaphoreDict.TryGetValue(id, out var semaphoreWithCount))
             {
-                semaphoreWithCount.Semaphore.Release();
-
                 if (Interlocked.Decrement(ref semaphoreWithCount.Count) == 0)
                 {
                     SemaphoreDict.TryRemove(id, out _);
+                    semaphoreWithCount.Semaphore.Release();
                 }
             }
         }
